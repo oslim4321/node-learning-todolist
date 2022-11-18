@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="wrapper">
+        <form action="/todo" method="post">
+            <input type="text" name="item" placeholder="Add New Items...">
+            <button>Add Todo</button>
+        </form>
+        <ul>
+            <% data.forEach((elem)=> { %>
+                <li data-doc="<%=elem.item %>" class="item"><%= elem.item %></li>
+            <% }) %>
+           
+        </ul>
+    </div>
+ 
+    <script>
+        const trashcan = document.querySelectorAll('.item');
+        trashcan.forEach((trashcan)=>{
+          trashcan.addEventListener('click', (e) => {
+          const endpoint = `/todo/${trashcan.dataset.doc}`;
+          let item= endpoint.replace(/ /g, '-')
+          fetch(item, {
+            method: 'DELETE',
+          })
+        //   .then(response => response.json())
+          .then(data => window.location.reload())
+          .catch(err => console.log(err));
+        });
+        })
+       
+        //
+        
+      </script>
+</body>
+</html>
